@@ -1,107 +1,114 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-# export PATH=/sgoinfre/homebrew/bin:/opt/homebrew/sbin:$PATH
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+###############
+### General ###
+###############
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# Correct wrong spellings
+setopt correct
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Load colors
+autoload -U colors && colors
+for COLOR in RED GREEN YELLOW BLUE MAGENTA CYAN BLACK WHITE; do
+   eval $COLOR='$fg_no_bold[${(L)COLOR}]'
+   eval BOLD_$COLOR='$fg_bold[${(L)COLOR}]'
+done
+eval NC='$reset_color'
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+##################
+### Completion ###
+##################
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# Load and initialise completion system
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit -d "$XDG_CACHE_HOME/zsh/.zshcompdump-$ZSH_VERSION"
+_comp_options+=(globdots)
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+##########################
+### Zap Plugin Manager ###
+##########################
 
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
+[ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
+plug "zsh-users/zsh-autosuggestions"
+plug "zap-zsh/supercharge"
+plug "zsh-users/zsh-syntax-highlighting"
+plug "hlissner/zsh-autopair"
+plug "zsh-users/zsh-history-substring-search"
+plug "MichaelAquilina/zsh-you-should-use"
+plug "zap-zsh/completions"
+plug "zap-zsh/sudo"
+plug "web-search"
+plug "zap-zsh/fzf"
+plug "zap-zsh/web-search"
+plug "jeffreytse/zsh-vi-mode"
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+########################
+### Matcha's Scripts ###
+########################
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
+# Add homebrew to PATH
+# if [[ $USER == "matda-co" ]]; then
+# 	export PATH="$HOME/sgoinfre/homebrew/bin:$PATH"
+# 	export PATH="$HOME/sgoinfre/passunca/homebrew/bin:$PATH"
+# 	export PATH="$HOME/sgoinfre/passunca/homebrew/sbin:$PATH"
+# 	export PATH="$HOME/sgoinfre/rust/build/x86_64-unknown-linux-gnu/stage0/bin:$PATH"
+# elif [[ $USER == "zedr0" ]]; then
+# 	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Load Homebrew config script
 source $HOME/.brewconfig.zsh
+
+########################
+### Matcha's Aliases ###
+########################
+
+# Compiling
+alias ccw='cc -Wall -Wextra -Werror -g'
+
+# 42 Norm Check
+alias nn='norminette'
+
+# Neovim
+alias v='nvim'
+alias clear_nvim='rm -rf ~/.local/share/nvim'
+ 
+# git
+alias ga='git add'
+alias gst='git status'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git pull'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias glgg='git log --graph --oneline --decorate'
+alias glgs='git log --graph --oneline --decorate | head -n 7'
+alias gm='git merge --stat --log'
+
+# kitty at 42
+if [[ $USER == "matda-co" ]]; then
+	alias kitty=~/.local/kitty.app/bin/kitty
+fi
+alias k='kitty --start-as=fullscreen'
+alias icat='kitty +kitten icat'
+alias kdiff='kitty +kitten diff'
+
+# Glow Markdown Renderer
+alias glow=~/bin/glow/glow
+
+
+############################
+### Load Starship Prompt ###
+############################
+
+if command -v starship > /dev/null 2>&1; then
+    eval "$(starship init zsh)"
+else
+    ZSH_THEME="refined"
+fi
+
+#####################################
+### Clear google-chrome Singleton* ###
+#####################################
+if [[ $USER == "passunca" ]]; then
+  rm -rf ~/.config/google-chrome/Singleton*
+fi
