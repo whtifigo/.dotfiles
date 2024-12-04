@@ -30,10 +30,10 @@ return {
         require('dap-python').setup(path)
       end
     },
-    {
-      'Joakker/lua-json5',
-      build = './install.sh'
-    }
+    -- {
+    --   'Joakker/lua-json5',
+    --   build = './install.sh'
+    -- }
   },
   config = function()
     local dap_ok, dap = pcall(require, "dap")
